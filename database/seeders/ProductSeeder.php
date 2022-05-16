@@ -20,5 +20,10 @@ class ProductSeeder extends Seeder
             'label' => 'Gold coffee',
             'profit_margin' => 0.25
         ]);
+        Product::factory()->create([
+            'slug' => 'arabic_coffee',
+            'label' => 'Arabic coffee',
+            'profit_margin' => 0.15
+        ]);
     }
 }
