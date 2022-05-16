@@ -59,7 +59,7 @@ class SalesController extends Controller
             $request->merge(['shipping_cost' => $shipment_cost]);
             $request->merge(['sold_at' => \Carbon\Carbon::now()->toDateTimeString()]);
             $this->salesRepository->create($request->only(['quantity','unit_cost','selling_price','cost','sold_at', 'shipping_cost']));
-            return redirect()->back()->withErrors(['msg' => 'Sale successful']);
+            return redirect()->back()->with(['msg' => 'Sale successful']);
         } catch (\Exception $e) {
             //Log
             return redirect()->back()->withErrors(['msg' => $e->getMessage()]);

@@ -39,7 +39,7 @@ class ShipmentCostController extends Controller
             $request->merge(['active' => 1]);
             $this->shipmentRepository->setAllToDeactive();
             $this->shipmentRepository->create($request->only(['cost','active']));
-            return redirect()->back()->withErrors(['msg' => 'New shipment price successfully set']);
+            return redirect()->back()->with(['msg' => 'New shipment price successfully set']);
         } catch (\Exception $e) {
             //Log
             return redirect()->back()->withErrors(['msg' => $e->getMessage()]);
