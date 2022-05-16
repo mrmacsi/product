@@ -49,7 +49,7 @@
                                         <td style="border: 1px solid black">{{$shipment_cost->cost}}</td>
                                         <td style="border: 1px solid black">{{$shipment_cost->active?'Yes':'No'}}</td>
                                         <td style="border: 1px solid black">{{\Carbon\Carbon::parse($shipment_cost->created_at)->format('Y-m-d H:i');}}</td>
-                                        <td style="border: 1px solid black">123</td>
+                                        <td style="border: 1px solid black">{{$shipment_cost->number_of_sales}}</td>
                                     </tr>
                                 @endforeach
                             </table>

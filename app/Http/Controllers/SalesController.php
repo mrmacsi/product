@@ -55,9 +55,11 @@ class SalesController extends Controller
             $selling_price = ($cost / (1-$product['profit_margin'])) + $shipment_cost;
             $selling_price = round($selling_price, 2);
             $request->merge(['selling_price' => $selling_price, 'cost' => $cost]);
+            $request->merge(['selling_price' => $selling_price, 'cost' => $cost]);
             $request->merge(['product_id' => $product['id']]);
+            $request->merge(['shipping_cost' => $shipment_cost]);
             $request->merge(['sold_at' => \Carbon\Carbon::now()->toDateTimeString()]);
-            $this->salesRepository->create($request->only(['quantity','unit_cost','selling_price','cost','sold_at']));
+            $this->salesRepository->create($request->only(['quantity','unit_cost','selling_price','cost','sold_at', 'shipping_cost']));
             return redirect()->back()->withErrors(['msg' => 'Sale successful']);
         } catch (\Exception $e) {
             //Log
