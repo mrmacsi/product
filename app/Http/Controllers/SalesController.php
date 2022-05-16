@@ -23,7 +23,8 @@ class SalesController extends Controller
     public function index()
     {
         $sales = $this->salesRepository->all();
-        return view('coffee_sales', ['sales' => $sales]);
+        $products = $this->productRepository->all();
+        return view('coffee_sales', ['sales' => $sales,'products' => $products]);
     }
 
     /**
@@ -33,7 +34,8 @@ class SalesController extends Controller
     {
         $request->validate([
             'quantity' => 'required|numeric',
-            'unit_cost' => 'required|numeric'
+            'unit_cost' => 'required|numeric',
+            'product_id' => 'required|exists:App\Models\Product,id'
         ],[
             'quantity.required' => 'A quantity is required',
             'unit_cost.required' => 'A unit cost is required',
@@ -41,15 +43,16 @@ class SalesController extends Controller
             'unit_cost.numeric' => 'Unit cost must be numeric',
         ]);
         try {
-            $product_id = $this->productRepository->getByColumn('gold_coffee','slug',['id','profit_margin']);
+            $product_id = $request->get('product_id');
+            $product = $this->productRepository->getByColumn($product_id,'id',['id','profit_margin']);
             $unit_cost = $request->get('unit_cost');
             $quantity = $request->get('quantity');
             $cost = $unit_cost * $quantity;
-            $cost = number_format((float)$cost, 2, '.', '');
-            $selling_price = ($cost / (1-$product_id['profit_margin'])) + $this->shipping_cost;
-            $selling_price = number_format((float)$selling_price, 2, '.', '');
+            $cost = round($cost, 2);
+            $selling_price = ($cost / (1-$product['profit_margin'])) + $this->shipping_cost;
+            $selling_price = round($selling_price, 2);
             $request->merge(['selling_price' => $selling_price, 'cost' => $cost]);
-            $request->merge(['product_id' => $product_id['id']]);
+            $request->merge(['product_id' => $product['id']]);
             $this->salesRepository->create($request->only(['quantity','unit_cost','selling_price','cost']));
             return redirect()->back()->withErrors(['msg' => 'Sale successful']);
         } catch (\Exception $e) {

@@ -25,6 +25,11 @@
                     <form id="salesForm" method="POST" action="{{route('store.sales')}}">
                     @csrf
                         <div class="col-xl-6 col-lg-6 col-md-6">
+                            <select name="product_id">
+                                @foreach ($products as $product)
+                                    <option value="{{$product->id}}">{{$product->label}}</option>
+                                @endforeach
+                            </select>
                             <input type="text" name="quantity" id="quantity" class="form-control" placeholder="Quantity" required>
                             <input type="text" name="unit_cost" id="unit_cost" class="form-control" placeholder="Unit Cost (£)" required>
                             <span class="p-6">Selling Price</span>
