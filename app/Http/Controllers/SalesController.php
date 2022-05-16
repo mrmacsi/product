@@ -4,17 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Repositories\ProductRepository;
 use App\Repositories\SalesRepository;
+use App\Repositories\ShipmentRepository;
 use \Illuminate\Http\Request;
 
 class SalesController extends Controller
 {
     private $salesRepository;
     private $productRepository;
-    private $shipping_cost = 10;
+    private $shipmentRepository;
     
-    public function __construct(SalesRepository $salesRepository, ProductRepository $productRepository) {
+    public function __construct(SalesRepository $salesRepository, ProductRepository $productRepository, ShipmentRepository $shipmentRepository) {
         $this->salesRepository = $salesRepository;
         $this->productRepository = $productRepository;
+        $this->shipmentRepository = $shipmentRepository;
     }
     /**
      *
@@ -45,11 +47,12 @@ class SalesController extends Controller
         try {
             $product_id = $request->get('product_id');
             $product = $this->productRepository->getByColumn($product_id,'id',['id','profit_margin']);
+            $shipment_cost = $this->shipmentRepository->getByColumn(1,'active',['cost'])['cost'];
             $unit_cost = $request->get('unit_cost');
             $quantity = $request->get('quantity');
             $cost = $unit_cost * $quantity;
             $cost = round($cost, 2);
-            $selling_price = ($cost / (1-$product['profit_margin'])) + $this->shipping_cost;
+            $selling_price = ($cost / (1-$product['profit_margin'])) + $shipment_cost;
             $selling_price = round($selling_price, 2);
             $request->merge(['selling_price' => $selling_price, 'cost' => $cost]);
             $request->merge(['product_id' => $product['id']]);
