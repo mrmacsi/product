@@ -45,11 +45,13 @@
                                 <th style="border: 1px solid black">Quantity</th>
                                 <th style="border: 1px solid black">Unit Cost</th>
                                 <th style="border: 1px solid black">Selling Price</th>
+                                <th style="border: 1px solid black">Sold at</th>
                                 @foreach ($sales as $sale)
                                 <tr>
                                     <td style="border: 1px solid black">{{$sale->quantity}}</td>
                                     <td style="border: 1px solid black">{{$sale->unit_cost}}</td>
                                     <td style="border: 1px solid black">{{$sale->selling_price}}</td>
+                                    <td style="border: 1px solid black">{{\Carbon\Carbon::parse($sale->sold_at)->format('Y-m-d H:i');}}</td>
                                 </tr>
                                 @endforeach
                             </table>
