@@ -22,6 +22,7 @@ Route::redirect('/dashboard', '/sales');
 
 Route::get('/sales', 'App\Http\Controllers\SalesController@index')->middleware(['auth'])->name('coffee.sales');
 Route::post('/sales', 'App\Http\Controllers\SalesController@store')->middleware(['auth'])->name('store.sales');
+Route::post('/calculate', 'App\Http\Controllers\SalesController@calculate')->middleware(['auth'])->name('calculate.sales');
 
 Route::get('/shipping-partners', 'App\Http\Controllers\ShipmentCostController@index')->middleware(['auth'])->name('shipping.partners');
 Route::post('/shipping-partners', 'App\Http\Controllers\ShipmentCostController@store')->middleware(['auth'])->name('store.shipment');
