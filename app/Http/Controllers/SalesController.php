@@ -22,7 +22,7 @@ class SalesController extends Controller
      */
     public function index()
     {
-        $sales = $this->salesRepository->all();
+        $sales = $this->salesRepository->orderBy('id','desc')->get();
         $products = $this->productRepository->all();
         return view('coffee_sales', ['sales' => $sales,'products' => $products]);
     }
